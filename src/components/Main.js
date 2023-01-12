@@ -1,23 +1,9 @@
 import { api } from "../utils/api";
 import { useEffect, useState } from "react";
 
-import PopupWithForm from "../components/PopupWithForm";
-import ImagePopup from "../components/ImagePopup";
 import Card from "../components/Card";
 
-export default function Main() {
-  const handleEditAvatarClick = () => {
-    document
-      .querySelector(".popup_profile-avatar")
-      .classList.add("popup_opened");
-  };
-  const handleEditProfileClick = () => {
-    document.querySelector(".popup_profile-form").classList.add("popup_opened");
-  };
-  const handleAddPlaceClick = () => {
-    document.querySelector(".popup_add-card").classList.add("popup_opened");
-  };
-
+export default function Main(props) {
   const [userName, setUserName] = useState();
   const [userDescription, setUserDescription] = useState();
   const [userAvatar, setUserAvatar] = useState();
@@ -43,7 +29,7 @@ export default function Main() {
           <button
             className="profile__avatar"
             type="button"
-            onClick={handleEditAvatarClick}
+            onClick={props.onEditAvatar}
           >
             <img
               src={userAvatar}
@@ -58,7 +44,7 @@ export default function Main() {
                 className="profile__button-edit"
                 type="button"
                 aria-label="Кнопка редактирования профиля"
-                onClick={handleEditProfileClick}
+                onClick={props.onEditProfile}
               ></button>
             </div>
             <p className="profile__subtitle">{userDescription}</p>
@@ -67,30 +53,12 @@ export default function Main() {
             className="profile__button-add"
             type="button"
             aria-label="Кнопка добавления"
-            onClick={handleAddPlaceClick}
+            onClick={props.onAddPlace}
           ></button>
         </section>
         <section className="elements" aria-label="Фото мест">
-          {cards.map((card) => (
-            <article className="element" key={card._id}>
-              <button
-                className="element__delete"
-                type="button"
-                aria-label="Кнопка удаления"
-              ></button>
-              <img src={card.link} className="element__image" alt={card.name} />
-              <div className="element__body">
-                <h2 className="element__text">{card.name}</h2>
-                <div className="element__likes">
-                  <button
-                    className="element__button"
-                    type="button"
-                    aria-label="Кнопка лайка"
-                  ></button>
-                  <div className="element__counter-like"></div>
-                </div>
-              </div>
-            </article>
+          {cards.map((card, index) => (
+            <Card card={card} key={index} onCardClick={props.onCardClick}/>
           ))}
         </section>
       </main>
