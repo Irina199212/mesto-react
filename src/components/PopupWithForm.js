@@ -15,7 +15,11 @@ export default function PopupWithForm(props) {
         <form className="form" action="./" method="post" name={props.name}>
           <h3 className="form__title">{props.title}</h3>
           {props.children}
-          <input type="submit" className="form__button" value="Сохранить" />
+          <input
+            type="submit"
+            className="form__button"
+            value={props.buttonText}
+          />
         </form>
       </div>
     </div>

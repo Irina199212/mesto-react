@@ -53,6 +53,7 @@ function App() {
         title="Обновить аватар"
         name="profile-avatar"
         onClose={closeAllPopups}
+        buttonText="Сохранить"
       >
         <div className="form__row">
           <input
@@ -71,6 +72,7 @@ function App() {
         title="Редактировать профиль"
         name="profile-form"
         onClose={closeAllPopups}
+        buttonText="Сохранить"
       >
         <div className="form__row">
           <input
@@ -105,6 +107,7 @@ function App() {
         title="Новое место"
         name="add-card"
         onClose={closeAllPopups}
+        buttonText="Создать"
       >
         <div className="form__row">
           <input
