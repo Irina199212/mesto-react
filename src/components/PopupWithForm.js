@@ -18,6 +18,7 @@ export default function PopupWithForm(props) {
           <input
             type="submit"
             className="form__button"
+            onClick={props.onSubmit}
             value={props.buttonText}
           />
         </form>

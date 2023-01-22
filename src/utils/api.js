@@ -24,7 +24,7 @@ export default class Api {
     return fetch(`${this._cardsUrl}`, {
       headers: this._headers,
       method: "POST",
-      body: JSON.stringify({ name: cardData.name, link: cardData.link }),
+      body: JSON.stringify(cardData),
     }).then((res) => this._getResponseData(res));
   }
 
@@ -35,20 +35,16 @@ export default class Api {
     }).then((res) => this._getResponseData(res));
   }
 
-  setLikeCard(id) {
+  changeLikeCardStatus(id, isLiked) {
+    let action = "PUT";
+    if (!isLiked) action = "DELETE";
+
     return fetch(`${this._cardsUrl}/${id}/likes `, {
       headers: this._headers,
-      method: "PUT",
+      method: action,
     }).then((res) => this._getResponseData(res));
   }
-
-  removeLikeCard(id) {
-    return fetch(`${this._cardsUrl}/${id}/likes `, {
-      headers: this._headers,
-      method: "DELETE",
-    }).then((res) => this._getResponseData(res));
-  }
-
+  
   getUserInfo() {
     return fetch(`${this._userInfoUrl}`, {
       headers: this._headers,
@@ -60,14 +56,14 @@ export default class Api {
     return fetch(`${this._userInfoUpdateUrl}`, {
       headers: this._headers,
       method: "PATCH",
-      body: JSON.stringify({ name: userInfo.name, about: userInfo.post }),
+      body: JSON.stringify(userInfo),
     }).then((res) => this._getResponseData(res));
   }
   updateUserAvatar(userInfo) {
     return fetch(`${this._userInfoUpdateUrl}/avatar`, {
       headers: this._headers,
       method: "PATCH",
-      body: JSON.stringify({ avatar: userInfo.avatar }),
+      body: JSON.stringify(userInfo),
     }).then((res) => this._getResponseData(res));
   }
 }

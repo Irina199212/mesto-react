@@ -1,14 +1,41 @@
-export default function Card({ card, onCardClick }) {
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { useContext } from "react";
+export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
+  const currentUser = useContext(CurrentUserContext);
+
+  const isOwn = card.owner._id === currentUser._id;
+  const isLiked = card.likes.some((i) => i._id === currentUser._id);
+  const cardLikeButtonClassName = `element__button ${
+    isLiked && "element__button_active"
+  }`;
+
+  const countLikes = () => {
+    if (card.likes.length > 0) return card.likes.length;
+    return;
+  };
+
   function handleClick() {
     onCardClick(card);
   }
+
+  function handleDeleteClick() {
+    onCardDelete(card);
+  }
+
+  function handleLikeClick() {
+    onCardLike(card);
+  }
+
   return (
     <article className="element">
-      <button
-        className="element__delete"
-        type="button"
-        aria-label="Кнопка удаления"
-      ></button>
+      {isOwn && (
+        <button
+          className="element__delete"
+          type="button"
+          aria-label="Кнопка удаления"
+          onClick={handleDeleteClick}
+        ></button>
+      )}
       <img
         src={card.link}
         className="element__image"
@@ -19,11 +46,12 @@ export default function Card({ card, onCardClick }) {
         <h2 className="element__text">{card.name}</h2>
         <div className="element__likes">
           <button
-            className="element__button"
+            className={cardLikeButtonClassName}
             type="button"
             aria-label="Кнопка лайка"
+            onClick={handleLikeClick}
           ></button>
-          <div className="element__counter-like"></div>
+          <div className="element__counter-like">{countLikes()}</div>
         </div>
       </div>
     </article>

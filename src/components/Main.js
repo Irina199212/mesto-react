@@ -1,26 +1,9 @@
-import { api } from "../utils/api";
-import { useEffect, useState } from "react";
-
+import { useContext } from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import Card from "../components/Card";
 
 export default function Main(props) {
-  const [userName, setUserName] = useState("");
-  const [userDescription, setUserDescription] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([info, initialCards]) => {
-        setUserName(info.name);
-        setUserDescription(info.about);
-        setUserAvatar(info.avatar);
-        setCards(initialCards);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const currentUser = useContext(CurrentUserContext);
 
   return (
     <main className="main">
@@ -31,14 +14,14 @@ export default function Main(props) {
           onClick={props.onEditAvatar}
         >
           <img
-            src={userAvatar}
+            src={currentUser.avatar}
             alt="Фото"
             className="profile__avatar-picture"
           />
         </button>
         <div className="profile__info">
           <div className="profile__block">
-            <h1 className="profile__title">{userName}</h1>
+            <h1 className="profile__title">{currentUser.name}</h1>
             <button
               className="profile__button-edit"
               type="button"
@@ -46,7 +29,7 @@ export default function Main(props) {
               onClick={props.onEditProfile}
             ></button>
           </div>
-          <p className="profile__subtitle">{userDescription}</p>
+          <p className="profile__subtitle">{currentUser.about}</p>
         </div>
         <button
           className="profile__button-add"
@@ -56,8 +39,14 @@ export default function Main(props) {
         ></button>
       </section>
       <section className="elements" aria-label="Фото мест">
-        {cards.map((card) => (
-          <Card card={card} key={card._id} onCardClick={props.onCardClick} />
+        {props.cards.map((card) => (
+          <Card
+            card={card}
+            key={card._id}
+            onCardClick={props.onCardClick}
+            onCardLike={props.onCardLike}
+            onCardDelete = {props.onCardDelete}
+          />
         ))}
       </section>
     </main>
