@@ -9,10 +9,7 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
     isLiked && "element__button_active"
   }`;
 
-  const countLikes = () => {
-    if (card.likes.length > 0) return card.likes.length;
-    return;
-  };
+  const likesCount = card.likes.length || ''
 
   function handleClick() {
     onCardClick(card);
@@ -51,7 +48,7 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
             aria-label="Кнопка лайка"
             onClick={handleLikeClick}
           ></button>
-          <div className="element__counter-like">{countLikes()}</div>
+          <div className="element__counter-like">{likesCount}</div>
         </div>
       </div>
     </article>

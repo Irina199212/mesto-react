@@ -32,9 +32,16 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-    });
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleUpdateUser(userInfo) {
@@ -65,8 +72,8 @@ function App() {
     api
       .removeCard(card._id)
       .then(() => {
-        cards.filter(item => item._id === card._id).forEach(f => cards.splice(cards.findIndex(item => item._id === f._id),1));
-        setCards([...cards]);
+        const newCards = cards.filter((item) => item._id !== card._id);
+        setCards(newCards);
       })
       .catch((err) => {
         console.log(err);
@@ -121,9 +128,7 @@ function App() {
         />
       )}
       <Footer />
-      {selectedCard && (
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-      )}
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
